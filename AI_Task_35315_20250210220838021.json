@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0",
+  "title_i18n": {
+    "fr_FR": "Enrich Structure From Snippet"
+  },
+  "configuration": {
+    "startNodeId": "azureInquisitiveElephant",
+    "debug": true,
+    "nodes": [
+      {
+        "uiConfiguration": {
+          "position": {
+            "x": -70,
+            "y": -115.33333333333334
+          }
+        },
+        "id": "azureInquisitiveElephant",
+        "label": "Enrich Structure From Snippet",
+        "type": "geminiChatModel",
+        "parameters": {
+          "topK": 3,
+          "systemMessage": "### Task Overview\nYou are provided with an HTML snippet extracted from a web page.\nYour job is to enrich an existing structure by analyzing the snippet to identify any additional fields.\nYou must reuse the known structure and keep all the existing fields intact while adding any new fields you find.\n\n### Output Format\nReturn a JSON object with the following format (example provided):\n\n{\n  \"label\": \"News Article\",\n  \"pluralLabel\": \"News Articles\",\n  \"name\": \"NewsArticle\",\n  \"schemaOrgType\": \"NewsArticle\",\n  \"description\": \"Latest information\",\n  \"primaryKey\": \"articleTitle,content\",\n  \"titleFieldName\": \"articleTitle\",\n  \"new\": false,\n  \"fields\": [\n    {\n      \"name\": \"articleTitle\",\n      \"label\": \"Article title\",\n      \"schemaOrgType\": \"headline\",\n      \"type\": \"text\",\n      \"new\": false\n    },\n    {\n      \"name\": \"content\",\n      \"label\": \"Content\",\n      \"schemaOrgType\": \"articleBody\",\n      \"type\": \"rich-text\",\n      \"new\": false\n    },\n    {\n      \"name\": \"illustration\",\n      \"label\": \"Illustration\",\n      \"schemaOrgType\": \"thumbnailUrl\",\n      \"type\": \"url\",\n      \"new\": true\n    }\n  ],\n  \"records\": [\n    {\n      \"externalReferenceCode\": \"126979a2-d3b0-9161-34e8-3078d85eedb6\",\n      \"articleTitle\": \"Robert wins the game\",\n      \"content\": \"<h1>A great achievement</h1><p>After blah blah...</p>\",\n      \"illustration\": \"https://some.site/some-picture.jpg\"\n    }\n  ]\n}\n\n### Field Types (choose one):\n- text\n- non-localizable-text\n- rich-text\n- integer\n- decimal\n- url\n- date\n- date-time (format: 2025-01-24T23:30:01.346Z)\n\n### \"New\" Attribute Usage\n- The top-level \"new\" attribute must be set to false (since you are updating an existing structure).\n- Each field has a \"new\" attribute. Set it to false for existing fields and true for any newly added fields.\n\n### Step-by-Step Instructions\n1/ Analyze the HTML Snippet:\nInspect the provided html along with the context in meta.\nIdentify any additional fields that are not present in the existing structure.\n\n2/ Enrich the Existing Structure:\nReuse all fields from the existing structure without modification.\nAppend any new fields discovered from the HTML analysis to the fields list. Mark these fields with \"new\": true.\n\n3/ Update the Record:\nIncorporate the new fields into the updated record from the input.\nEnsure that the record reflects all fields as defined in the updated structure.\n\n4/ Output the JSON:\nYour output must be a valid JSON object exactly following the format above.\nDo not include any extra text or markdown formatting in your response.",
+          "memoryMaxMessages": 2,
+          "temperature": 0.7,
+          "project": "liferaycloud-development",
+          "location": "europe-west1",
+          "model": "gemini-1.5-pro",
+          "useChatMemory": false,
+          "maxOutputTokens": "8000",
+          "promptTemplate": "### Existing structure\nHere is the existing structure we have already identified with the record to be updated:\n{{input.existingStructures}}\n\n### HTML content to analyze\nAnalyze this html:\n{{input.html}}\n\n### Meta info\nTake into account the meta info from the HTML page to help understand the context:\n{{input.meta}}\n\n### Error Handling\nIf no structured content is found, return a JSON object with an appropriate error message.\n\n### Final Reminder\nYour response must be valid JSON that strictly adheres to the format provided, without extra text or markdown formatting.",
+          "outputParameterName": "text"
+        }
+      }
+    ],
+    "edges": []
+  },
+  "description_i18n": {},
+  "externalReferenceCode": "AI_MIG_TASK_ENRICH_STRUCTURE"
+}

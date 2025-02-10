@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "Liferay migration assistant",
+    "version": "0.0.1",
+    "description": "Helps migrate websites to Liferay DXP",
+    "permissions": [
+        "scripting",
+        "sidePanel",
+        "activeTab"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },    
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"]
+        }
+    ],
+    "side_panel": {
+        "default_path": "sidepanel.html"
+    }
+  }
+  

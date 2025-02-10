@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0",
+  "title_i18n": {
+    "fr_FR": "Extract Structure From Snippet"
+  },
+  "configuration": {
+    "startNodeId": "azureInquisitiveElephant",
+    "debug": true,
+    "nodes": [
+      {
+        "uiConfiguration": {
+          "position": {
+            "x": -70,
+            "y": -115.33333333333334
+          }
+        },
+        "id": "azureInquisitiveElephant",
+        "label": "Extract Structure From Snippet",
+        "type": "geminiChatModel",
+        "parameters": {
+          "topK": 3,
+          "systemMessage": "### Task Overview\nYou are provided with an HTML snippet and meta information. Your task is to:\n1. Determine if the HTML snippet represents a single element or a collection.\n2. Identify and describe the content using the best matching schema.org type.\n3. Output a JSON object following the specific structure outlined below.\n\n### Output Format\nReturn a JSON object with the following format (example provided):\n\n{\n  \"label\": \"News Article\",\n  \"pluralLabel\": \"News Articles\",\n  \"name\": \"NewsArticle\",\n  \"schemaOrgType\": \"NewsArticle\",\n  \"description\": \"Latest information\",\n  \"primaryKey\": \"articleTitle,content\",\n  \"titleFieldName\": \"articleTitle\",\n  \"new\": false,\n  \"fields\": [\n    {\n      \"name\": \"articleTitle\",\n      \"label\": \"Article title\",\n      \"schemaOrgType\": \"headline\",\n      \"type\": \"text\",\n      \"new\": false\n    },\n    {\n      \"name\": \"content\",\n      \"label\": \"Content\",\n      \"schemaOrgType\": \"articleBody\",\n      \"type\": \"rich-text\",\n      \"new\": false\n    },\n    {\n      \"name\": \"illustration\",\n      \"label\": \"Illustration\",\n      \"schemaOrgType\": \"thumbnailUrl\",\n      \"type\": \"url\",\n      \"new\": true\n    },\n    {\n      \"name\": \"moreInfoUrl\",\n      \"label\": \"More Info\",\n      \"schemaOrgType\": \"url\",\n      \"type\": \"url\",\n      \"new\": true\n    }\n  ],\n  \"records\": [\n    {\n      \"articleTitle\": \"Robert wins the game\",\n      \"content\": \"<h1>A great achievement</h1><p>After blah blah...</p>\",\n      \"illustration\": \"https://some.site/some-picture.jpg\",\n      \"moreInfoUrl\": \"https://some.site/robert-wins\"\n    },\n    {\n      \"articleTitle\": \"End of the competition\",\n      \"content\": \"<h1>Rankings</h1><table>...</table>\",\n      \"illustration\": \"https://some.site/some-other-picture.jpg\",\n      \"moreInfoUrl\": \"https://some.site/end-competition\"\n    }\n  ]\n}\n\n### Field Types (choose one):\n- text\n- non-localizable-text\n- rich-text\n- integer\n- decimal\n- url\n- date\n- date-time (format: 2025-01-24T23:30:01.346Z)\n\n### Additional Instructions\n- **Structure Identification:** Decide if the HTML snippet contains a single element or multiple records.\n- **Existing Structure Check:** If the snippet matches an existing structure (see the existing structures below), update it; otherwise, mark it as new (\\`\"new\": true\\`).\n- **Primary Key:** The primaryKey must consist of one or more field names (comma-separated) that uniquely identify a record.\n- **Title Field:** Select one field from the fields to serve as the title (\\`titleFieldName\\`).\n- **URL Field:** If a record contains a link to a related entity, name that field \\`\"moreInfoUrl\"\\`.\n- **Strict Output:** Return only the JSON object—no additional text or formatting.",
+          "memoryMaxMessages": 2,
+          "temperature": 0.7,
+          "project": "liferaycloud-development",
+          "location": "europe-west1",
+          "model": "gemini-1.5-pro",
+          "useChatMemory": false,
+          "maxOutputTokens": "8000",
+          "promptTemplate": "### Existing structures\nHere are the structures we have already identified with a sample record:\n{{input.existingStructures}}\n\n### HTML content to analyze\nAnalyze this html:\n{{input.html}}\n\n### Meta info\nTake into account the meta info from the HTML page to help understand the context:\n{{input.meta}}\n\n### Error Handling\nIf no structured content is found, return a JSON object with an appropriate error message.\n\n### Final Reminder\nYour response must be valid JSON that strictly adheres to the format provided, without extra text or markdown formatting.",
+          "outputParameterName": "text"
+        }
+      }
+    ],
+    "edges": []
+  },
+  "description_i18n": {},
+  "externalReferenceCode": "AI_MIG_TASK_EXTRACT_STRUCTURE"
+}
