@@ -13,7 +13,8 @@ Object definitions will be pushed here.
 
 Create a site where you will push data to. Find out its group ID.
 
-Create an Oauth 2.0 client for the chrome extension (client credentials). Give it full Object Admin scopes.
+Create an Oauth 2.0 client (using the "Other" Client profile) for
+the chrome extension (with only client credentials). Give it full Object Admin scopes.
 
 ## Update config.js
 
